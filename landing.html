@@ -205,10 +205,63 @@ section{position:relative;z-index:1;min-height:100vh;display:flex;align-items:ce
 .bgold{background:var(--y);color:var(--k);}
 
 @media(max-width:768px){
-  .rlayer{flex-direction:column;padding:80px 6vw 60px;}
+  /* NAV */
+  nav{padding:14px 20px;}
+  nav.solid{padding:10px 20px;}
+  .nav-logo img{height:44px;}
+  .nav-pill{font-size:10px;padding:7px 14px;}
+
+  /* CURSOR — ocultar en touch */
+  .cdot{display:none;}
+  body{cursor:auto;}
+  .btn{cursor:pointer;}
+  .flinks a{cursor:pointer;}
+
+  /* HERO */
+  #hero{padding:90px 6vw 50px;}
+  .hero-title{font-size:clamp(72px,19vw,110px);}
+  .hero-sub{font-size:clamp(16px,5vw,22px);}
+  .hero-actions{flex-direction:column;align-items:center;margin-top:36px;gap:10px;}
+  .hero-actions .btn{width:100%;max-width:300px;text-align:center;}
+
+  /* REVEAL — en móvil: capas estáticas apiladas */
+  #reveal-sec{height:auto;min-height:unset;}
+  .rlayer{
+    position:relative;inset:unset;
+    flex-direction:column;
+    padding:70px 6vw 50px;
+    gap:10px;
+  }
+  #rB{
+    clip-path:none !important;
+    background:radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245,238,27,.18) 0%, transparent 70%), #070707;
+    pointer-events:auto;
+  }
   #rB .r-img,#rB .r-txt{order:unset;}
+  #reveal-hint{display:none;}
+  .r-img img{width:clamp(160px,55vw,260px);}
+  .rname{font-size:clamp(48px,13vw,72px);}
+  .rdesc{font-size:15px;max-width:100%;}
+  .rprice{font-size:38px;}
+  .r-txt .btn{width:100%;text-align:center;}
+
+  /* FEATURES */
+  #feats{padding:80px 6vw 60px;}
+  .feats-head{margin-bottom:40px;}
   .fgrid{grid-template-columns:1fr 1fr;}
-  nav{padding:16px 24px;}nav.solid{padding:12px 24px;}
+  .fc{padding:30px 18px;}
+
+  /* COMBO */
+  #combo{padding:80px 6vw;}
+  .combo-title{font-size:clamp(58px,15vw,90px);}
+  .combo-cta .btn{width:100%;max-width:320px;text-align:center;font-size:17px;padding:16px 20px;}
+
+  /* FOOTER */
+  #foot{padding:70px 6vw 60px;gap:14px;}
+  .flogo{font-size:clamp(52px,14vw,90px);}
+  .ftag{font-size:17px;}
+  .flinks{gap:10px;}
+  .flinks a{padding:8px 16px;font-size:10px;}
 }
 </style>
 </head>
@@ -337,7 +390,8 @@ function lerp(a,b,t){return a+(b-a)*t;}
   requestAnimationFrame(ac);
 })();
 
-/* REVEAL */
+/* REVEAL — solo en desktop (no touch) */
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 const revSec = document.getElementById('reveal-sec');
 const rB     = document.getElementById('rB');
 const hint   = document.getElementById('reveal-hint');
@@ -345,6 +399,7 @@ const R = 300; // radio del círculo — grande, protagonista
 let hintHidden = false;
 
 document.addEventListener('mousemove', e => {
+  if(isTouch) return;
   const rect = revSec.getBoundingClientRect();
   const inside = e.clientY >= rect.top && e.clientY <= rect.bottom
               && e.clientX >= rect.left && e.clientX <= rect.right;
